@@ -169,12 +169,12 @@ function RenderSchoolTemplate(aSchool = School) {
                 output += '\n  The class is empty '
             output += '\n********************************************\n';
         }
-        output += ' Total Classes ' + aSchool.classes.length + ', total students ' + SchoolStudents + '\n';
+        output += ' Total Classes ' + aSchool.classes.length + ', total students ' + SchoolStudents + '\n\n';
     }
     else
-        output += '  The School is empty\n';
+        output += '  The School is empty\n\n';
     console.log(output);
-    return output;
+    return true;
 }
 
 // Final Template
