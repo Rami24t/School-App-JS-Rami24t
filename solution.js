@@ -1,27 +1,21 @@
 'use strict';
-
-var a = 8;
 // School app
 //     create app to add, remove, read and edit Students and Classes in a School
-//         the school model:
+//         the School model:
 //        School=[ classObject1,classObject2,....]
 //         the class model:
 //      {
 //          name: "FbW3",
 //          students: [studentObject1, studentObject1,...],
 //      }
-
 //         the Student model:
-
 //     {
 //             name: "Pilar",
 //             email: "pilar@yahoo.com",
 //             city: "Berlin",
 //     }
-
-// school data model:
-
-let school = [
+// School data model:
+let School = [
     {
         name: "FbW1",
         students: [
@@ -37,7 +31,6 @@ let school = [
             },
         ],
     },
-
     {
         name: "FbW2",
         students: [
@@ -57,36 +50,64 @@ let school = [
         name: "FbW3",
         students: [],
     },
-]
+];
 
 // Tasks
 // App Functions
-
 //     Functions arguments ==> Passing one single object as argument holds all the arguments.
-
 //     createClass function which takes argument(object) holds class name
 
-//     create student function which takes argument(object) holds class ID and the student data
 
+
+function createClass({ name: className }, aSchool = School) {
+    aSchool.push({ name: className, students: [] })
+}
+createClass({ name: 'Class10' });
+
+//     create student function which takes argument(object) holds class ID and the student data
 //   {
 //         name: "Pilar",
 //         email: "pilar@yahoo.com",
 //         city: "Berlin",
 //   }
 
+function createStudent({ classID, newStudent }, aSchool = School) {
+    aSchool[classID - 1].students.push(newStudent);
+}
+
+createStudent(
+    {
+        classID: 4,
+        newStudent: {
+            name: "Johnnny",
+            email: "johnny@yahoo.com",
+            city: "Paris",
+        }
+    });
 //     create removeClass function which takes ID and remove class by ID
 
+function removeClass({ classID }, aSchool = School) {
+    aSchool.splice([classID - 1], 1);
+}
+
+// removeClass({ classID: 4 });
+
 //     create removeStudent function which takes argument(object) holds class ID and the student ID
-
+function removeStudent({ classID, studentID }, aSchool = School) {
+    //    delete aSchool[classID - 1].students[studentID - 1];
+    aSchool[classID - 1].students.splice(studentID - 1, 1);
+}
+//removeStudent({ classID: 4, studentID: 1 });
 //     create editStudent function which takes argument(object) with holds class ID and the student ID
-
 // editStudent ==> info name, email and city.
-
+function editStudent({ classID, studentID, name, email, city, info }, aSchool = School) {
+    aSchool[classID - 1].students[studentID - 1] = { name, email, city, info };
+}
+editStudent({ classID: 4, studentID: 1, name: 'Rami', email: 'rami222@email.com', city: 'Beirut' });
 //     create function call RenderSchoolTemplate
-//     This function Format and render school data
-
-function RenderSchoolTemplate(aSchool) {
-    let schoolStudents = 0;
+//     This function Format and render School data
+function RenderSchoolTemplate(aSchool = School) {
+    let SchoolStudents = 0;
     let output = '';
     output += '\n';
     output += ' School Classes:';
@@ -97,20 +118,20 @@ function RenderSchoolTemplate(aSchool) {
             if (aSchool[i].students.length > 0)
                 for (let j = 0; j < aSchool[i].students.length; j++) {
                     output += '\n ' + (j + 1) + '- ' + aSchool[i].students[j].name + ', ' + aSchool[i].students[j].email + ', ' + aSchool[i].students[j].city + ' - (student ID: ' + (j + 1) + ').';
-                    schoolStudents++;
+                    SchoolStudents++;
                 }
             else
                 output += '\n  The class is empty '
             output += '\n********************************************\n';
         }
-        output += ' Total Classes ' + aSchool.length + ', total students ' + schoolStudents + '\n';
+        output += ' Total Classes ' + aSchool.length + ', total students ' + SchoolStudents + '\n';
     }
     else
-        output += '  The school is empty\n';
+        output += '  The School is empty\n';
     console.log(output);
     return output;
 }
-RenderSchoolTemplate(school);
+RenderSchoolTemplate();
 
 // Final Template
 
