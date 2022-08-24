@@ -4,16 +4,19 @@ const schoolObject = {
     id: 1,
     classes: [
         {
+            active: true,
             id: 1,
             name: "FbW1",
             students: [
                 {
+                    active: true,
                     id: 1,
                     name: "Alex",
                     email: "alex@yahoo.com",
                     city: "Berlin",
                 },
                 {
+                    active: true,
                     id: 2,
                     name: "Max",
                     email: "max@yahoo.com",
@@ -22,16 +25,19 @@ const schoolObject = {
             ],
         },
         {
+            active: true,
             id: 2,
             name: "FbW2",
             students: [
                 {
+                    active: true,
                     id: 1,
                     name: "Jon",
                     email: "jon@yahoo.com",
                     city: "Berlin",
                 },
                 {
+                    active: true,
                     id: 2,
                     name: "Pilar",
                     email: "pilar@yahoo.com",
@@ -40,6 +46,7 @@ const schoolObject = {
             ],
         },
         {
+            active: true,
             id: 3,
             name: "FbW3",
             students: [],
@@ -47,7 +54,7 @@ const schoolObject = {
     ]
 };
 
-function createClass({ name: className = '' } = {}, aSchool = schoolObject) {
+function createClass({ name: className = '', active = true } = {}, aSchool = schoolObject) {
     if (!arguments[0] || !className) {
         console.log('Class name is required');
         return false;
@@ -58,7 +65,7 @@ function createClass({ name: className = '' } = {}, aSchool = schoolObject) {
     }
     let classID = maxID + 1 || 0;
     if (aSchool.classes) {
-        aSchool.classes.push({ name: className, students: [], id: classID });
+        aSchool.classes.push({ name: className, students: [], id: classID, active });
         return true;
     }
     else
@@ -76,6 +83,8 @@ function createStudent({ classID, newStudent } = {}, aSchool = schoolObject) {
         console.log('newStudent (data) is required to add a new student');
         return false;
     }
+    if (newStudent.active === undefined)
+        newStudent.active = true;
     let classIndex = findClassIndex(classID);
     if (classIndex === false)
         return false
@@ -102,7 +111,8 @@ function removeClass({ classID } = {}, aSchool = schoolObject) {
     }
     let classIndex = findClassIndex(classID);
     if (!(classIndex === false)) {
-        aSchool.classes.splice([findClassIndex(classID)], 1);
+        //        aSchool.classes.splice([findClassIndex(classID)], 1);
+        aSchool.classes[classIndex].active = false;
         return true;
     }
     else
@@ -128,7 +138,8 @@ function removeStudent({ classID, studentID } = {}, aSchool = schoolObject) {
     let studentIndex = findStudentIndex(classID, studentID);
     if (studentIndex === false)
         return false
-    aSchool.classes[classIndex].students.splice(studentIndex, 1);
+    //     aSchool.classes[classIndex].students.splice(studentIndex, 1);
+    aSchool.classes[classIndex].students[studentIndex].active = false;
     return true;
 }
 // removeStudent({ classID: 2, studentID: 1 });
@@ -200,17 +211,20 @@ function RenderSchoolTemplate(aSchool = schoolObject) {
     output += ' School Classes:';
     output += '\n------------------\n';
     if (aSchool.classes.length > 0) {
-        for (let i = 0; i < aSchool.classes.length; i++) {
-            output += ' ' + aSchool.classes[i].name + ' - (class ID: ' + (aSchool.classes[i].id) + '):';
-            if (aSchool.classes[i].students.length > 0)
-                for (let j = 0; j < aSchool.classes[i].students.length; j++) {
-                    output += '\n ' + (j + 1) + '- ' + aSchool.classes[i].students[j].name + ', ' + aSchool.classes[i].students[j].email + ', ' + aSchool.classes[i].students[j].city + ' - (student ID: ' + (aSchool.classes[i].students[j].id) + ').';
-                    SchoolStudents++;
-                }
-            else
-                output += '\n  The class is empty '
-            output += '\n********************************************\n';
-        }
+        for (let i = 0; i < aSchool.classes.length; i++)
+            if (aSchool.classes[i].active) {
+                output += ' ' + aSchool.classes[i].name + ' - (class ID: ' + (aSchool.classes[i].id) + '):';
+                if (aSchool.classes[i].students.length > 0)
+                    for (let j = 0; j < aSchool.classes[i].students.length; j++) {
+                        if (aSchool.classes[i].students[j].active) {
+                            output += '\n ' + (j + 1) + '- ' + aSchool.classes[i].students[j].name + ', ' + aSchool.classes[i].students[j].email + ', ' + aSchool.classes[i].students[j].city + ' - (student ID: ' + (aSchool.classes[i].students[j].id) + ').';
+                            SchoolStudents++;
+                        }
+                    }
+                else
+                    output += '\n  The class is empty '
+                output += '\n********************************************\n';
+            }
         output += ' Total Classes ' + aSchool.classes.length + ', total students ' + SchoolStudents + '\n\n';
     }
     else
@@ -269,6 +283,7 @@ createStudent(
             city: "Paris",
         }
     });
+// removeStudent({ classID: 4, studentID: 3 });
 editStudent({ classID: 4, studentID: 1, name: 'Rami', email: 'rami222@email.com', city: 'Beirut' });
 
 RenderSchoolTemplate();
