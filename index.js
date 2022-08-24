@@ -1,8 +1,6 @@
 'use strict';
 
-
-
-let School = {
+const schoolObject = {
     id: 1,
     classes: [
         {
@@ -49,7 +47,7 @@ let School = {
     ]
 };
 
-function createClass({ name: className = '' } = {}, aSchool = School) {
+function createClass({ name: className = '' } = {}, aSchool = schoolObject) {
     if (!arguments[0] || !className) {
         console.log('Class name is required');
         return false;
@@ -69,7 +67,7 @@ function createClass({ name: className = '' } = {}, aSchool = School) {
 
 //    function createStudent takes an object that holds the class ID and the student data
 
-function createStudent({ classID, newStudent } = {}, aSchool = School) {
+function createStudent({ classID, newStudent } = {}, aSchool = schoolObject) {
     if (!(classID)) {
         console.log('ClassID is required to add a new student');
         return false;
@@ -97,7 +95,7 @@ function createStudent({ classID, newStudent } = {}, aSchool = School) {
 
 //     create removeClass function which takes ID and remove class by ID
 
-function removeClass({ classID } = {}, aSchool = School) {
+function removeClass({ classID } = {}, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to remove a class');
         return false;
@@ -114,7 +112,7 @@ function removeClass({ classID } = {}, aSchool = School) {
 //removeClass({ classID: 4 });
 
 //     create removeStudent function which takes argument(object) holds class ID and the student ID
-function removeStudent({ classID, studentID } = {}, aSchool = School) {
+function removeStudent({ classID, studentID } = {}, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to remove Student');
         return false;
@@ -136,7 +134,7 @@ function removeStudent({ classID, studentID } = {}, aSchool = School) {
 // removeStudent({ classID: 2, studentID: 1 });
 //     create editStudent function which takes argument(object) with holds class ID and the student ID
 // editStudent ==> info name, email and city.
-function findClassIndex(classID, aSchool = School) {
+function findClassIndex(classID, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to find class index');
         return false;
@@ -147,7 +145,7 @@ function findClassIndex(classID, aSchool = School) {
             return i;
     return false;
 }
-function findStudentIndex(classID, studentID, aSchool = School) {
+function findStudentIndex(classID, studentID, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to findStudentIndex');
         return false;
@@ -174,7 +172,7 @@ function findStudentIndex(classID, studentID, aSchool = School) {
 }
 
 
-function editStudent({ classID, studentID, name, email, city, info } = {}, aSchool = School) {
+function editStudent({ classID, studentID, name, email, city, info } = {}, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to editStudent');
         return false;
@@ -194,8 +192,8 @@ function editStudent({ classID, studentID, name, email, city, info } = {}, aScho
 }
 
 //     create function call RenderSchoolTemplate
-//     This function Format and render School data
-function RenderSchoolTemplate(aSchool = School) {
+//     This function formats and prints school data
+function RenderSchoolTemplate(aSchool = schoolObject) {
     let SchoolStudents = 0;
     let output = '';
     output += '\n';
@@ -276,3 +274,4 @@ editStudent({ classID: 4, studentID: 1, name: 'Rami', email: 'rami222@email.com'
 RenderSchoolTemplate();
 
 // createClass();
+// createStudent({ classID: 1 })
