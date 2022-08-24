@@ -49,7 +49,11 @@ let School = {
     ]
 };
 
-function createClass({ name: className }, aSchool = School) {
+function createClass({ name: className = '' } = {}, aSchool = School) {
+    if (!arguments[0] || !className) {
+        console.log('Class name is required');
+        return false;
+    }
     let maxID = 0;
     for (let i = 0; i < aSchool.classes.length - 1; i++) {
         maxID = aSchool.classes[i].id > aSchool.classes[i + 1].id ? aSchool.classes[i].id : aSchool.classes[i + 1].id;
@@ -65,7 +69,15 @@ function createClass({ name: className }, aSchool = School) {
 
 //    function createStudent takes an object that holds the class ID and the student data
 
-function createStudent({ classID, newStudent }, aSchool = School) {
+function createStudent({ classID, newStudent } = {}, aSchool = School) {
+    if (!(classID)) {
+        console.log('ClassID is required to add a new student');
+        return false;
+    }
+    if (!(newStudent)) {
+        console.log('newStudent (data) is required to add a new student');
+        return false;
+    }
     let classIndex = findClassIndex(classID);
     if (classIndex === false)
         return false
@@ -85,7 +97,11 @@ function createStudent({ classID, newStudent }, aSchool = School) {
 
 //     create removeClass function which takes ID and remove class by ID
 
-function removeClass({ classID }, aSchool = School) {
+function removeClass({ classID } = {}, aSchool = School) {
+    if (!classID) {
+        console.log('classID is needed to remove a class');
+        return false;
+    }
     let classIndex = findClassIndex(classID);
     if (!(classIndex === false)) {
         aSchool.classes.splice([findClassIndex(classID)], 1);
@@ -98,7 +114,15 @@ function removeClass({ classID }, aSchool = School) {
 //removeClass({ classID: 4 });
 
 //     create removeStudent function which takes argument(object) holds class ID and the student ID
-function removeStudent({ classID, studentID }, aSchool = School) {
+function removeStudent({ classID, studentID } = {}, aSchool = School) {
+    if (!classID) {
+        console.log('classID is needed to remove Student');
+        return false;
+    }
+    if (!studentID) {
+        console.log('studentID is needed to remove Student');
+        return false;
+    }
     //    delete aSchool[classIndex].students[studentID - 1];
     let classIndex = findClassIndex(classID);
     if (classIndex === false)
@@ -113,6 +137,10 @@ function removeStudent({ classID, studentID }, aSchool = School) {
 //     create editStudent function which takes argument(object) with holds class ID and the student ID
 // editStudent ==> info name, email and city.
 function findClassIndex(classID, aSchool = School) {
+    if (!classID) {
+        console.log('classID is needed to find class index');
+        return false;
+    }
     let classes = aSchool.classes;
     for (let i = 0; i < classes.length; i++)
         if (classes[i].id === classID)
@@ -120,6 +148,14 @@ function findClassIndex(classID, aSchool = School) {
     return false;
 }
 function findStudentIndex(classID, studentID, aSchool = School) {
+    if (!classID) {
+        console.log('classID is needed to findStudentIndex');
+        return false;
+    }
+    if (!studentID) {
+        console.log('studentID is needed to findStudentIndex');
+        return false;
+    }
     let aClass;
     let classIndex = findClassIndex(classID)
     if (classIndex === false)
@@ -138,7 +174,15 @@ function findStudentIndex(classID, studentID, aSchool = School) {
 }
 
 
-function editStudent({ classID, studentID, name, email, city, info }, aSchool = School) {
+function editStudent({ classID, studentID, name, email, city, info } = {}, aSchool = School) {
+    if (!classID) {
+        console.log('classID is needed to editStudent');
+        return false;
+    }
+    if (!studentID) {
+        console.log('studentID is needed to editStudent');
+        return false;
+    }
     let update = { name, email, city, info };
     let classIndex = findClassIndex(classID);
     if (classIndex === false)
@@ -229,5 +273,6 @@ createStudent(
     });
 editStudent({ classID: 4, studentID: 1, name: 'Rami', email: 'rami222@email.com', city: 'Beirut' });
 
-
 RenderSchoolTemplate();
+
+// createClass();
