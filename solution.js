@@ -118,8 +118,23 @@ function removeClass({ classID } = {}, aSchool = schoolObject) {
     else
         return false;
 }
-
 //removeClass({ classID: 4 });
+
+function permanentlyDeleteClass({ classID } = {}, aSchool = schoolObject) {
+    if (!classID) {
+        console.log('classID is needed to remove a class');
+        return false;
+    }
+    let classIndex = findClassIndex(classID);
+    if (!(classIndex === false)) {
+        // aSchool.classes[classIndex].active = false;
+        aSchool.classes.splice([findClassIndex(classID)], 1);
+        return true;
+    }
+    else
+        return false;
+}
+
 
 //     create removeStudent function which takes argument(object) holds class ID and the student ID
 function removeStudent({ classID, studentID } = {}, aSchool = schoolObject) {
@@ -145,6 +160,29 @@ function removeStudent({ classID, studentID } = {}, aSchool = schoolObject) {
 // removeStudent({ classID: 2, studentID: 1 });
 //     create editStudent function which takes argument(object) with holds class ID and the student ID
 // editStudent ==> info name, email and city.
+
+function permanentlyDeleteStudent({ classID, studentID } = {}, aSchool = schoolObject) {
+    if (!classID) {
+        console.log('classID is needed to remove Student');
+        return false;
+    }
+    if (!studentID) {
+        console.log('studentID is needed to remove Student');
+        return false;
+    }
+    //    delete aSchool[classIndex].students[studentID - 1];
+    let classIndex = findClassIndex(classID);
+    if (classIndex === false)
+        return false
+    let studentIndex = findStudentIndex(classID, studentID);
+    if (studentIndex === false)
+        return false
+    //   aSchool.classes[classIndex].students[studentIndex].active = false;
+    aSchool.classes[classIndex].students.splice(studentIndex, 1);
+    return true;
+}
+
+
 function findClassIndex(classID, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to find class index');
