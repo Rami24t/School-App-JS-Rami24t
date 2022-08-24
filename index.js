@@ -1,3 +1,5 @@
+// Rami Al-Saadi --- School App in JS --- Aug 2022 
+
 'use strict';
 
 const schoolObject = {
@@ -120,6 +122,25 @@ function removeClass({ classID } = {}, aSchool = schoolObject) {
 }
 //removeClass({ classID: 4 });
 
+function restoreClass({ classID } = {}, aSchool = schoolObject) {
+    if (!classID) {
+        console.log('classID is needed to remove a class');
+        return false;
+    }
+    let classIndex = findClassIndex(classID);
+    if (!(classIndex === false)) {
+        //        aSchool.classes.splice([findClassIndex(classID)], 1);
+        if (aSchool.classes[classIndex].active === true) {
+            console.log('Class is already active')
+            return false;
+        }
+        aSchool.classes[classIndex].active = true;
+        return true;
+    }
+    else
+        return false;
+}
+
 function permanentlyDeleteClass({ classID } = {}, aSchool = schoolObject) {
     if (!classID) {
         console.log('classID is needed to remove a class');
@@ -154,12 +175,45 @@ function removeStudent({ classID, studentID } = {}, aSchool = schoolObject) {
     if (studentIndex === false)
         return false
     //     aSchool.classes[classIndex].students.splice(studentIndex, 1);
+    if (aSchool.classes[classIndex].students[studentIndex].active === false) {
+        console.log('Student is already removed.');
+        return false;
+    }
     aSchool.classes[classIndex].students[studentIndex].active = false;
     return true;
 }
 // removeStudent({ classID: 2, studentID: 1 });
 //     create editStudent function which takes argument(object) with holds class ID and the student ID
 // editStudent ==> info name, email and city.
+
+function restoreStudent({ classID, studentID } = {}, aSchool = schoolObject) {
+    if (!classID) {
+        console.log('classID is needed to remove Student');
+        return false;
+    }
+    if (!studentID) {
+        console.log('studentID is needed to remove Student');
+        return false;
+    }
+    //    delete aSchool[classIndex].students[studentID - 1];
+    let classIndex = findClassIndex(classID);
+    if (classIndex === false)
+        return false
+    let studentIndex = findStudentIndex(classID, studentID);
+    if (studentIndex === false)
+        return false
+    //     aSchool.classes[classIndex].students.splice(studentIndex, 1);
+    if (aSchool.classes[classIndex].students[studentIndex].active === false) {
+        console.log('Student is already removed.');
+        return false;
+    }
+    if (aSchool.classes[classIndex].students[studentIndex].active === true) {
+        console.log('Student is already active');
+        return false;
+    }
+    aSchool.classes[classIndex].students[studentIndex].active = true;
+    return true;
+}
 
 function permanentlyDeleteStudent({ classID, studentID } = {}, aSchool = schoolObject) {
     if (!classID) {
@@ -233,10 +287,14 @@ function editStudent({ classID, studentID, name, email, city, info } = {}, aScho
     let update = { name, email, city, info };
     let classIndex = findClassIndex(classID);
     if (classIndex === false)
-        return false
+        return false;
     let studentIndex = findStudentIndex(classID, studentID);
     if (studentIndex === false)
-        return false
+        return false;
+    if (!aSchool.classes[classIndex].students[studentIndex].active) {
+        console.log('Cannot edit a deactivated/removed student');
+        return false;
+    }
     aSchool.classes[classIndex].students[studentIndex] = { ...aSchool.classes[classIndex].students[studentIndex], ...update };
 }
 
@@ -321,6 +379,8 @@ createStudent(
             city: "Paris",
         }
     });
+//removeClass({ classID: 1});
+// removeStudent({ classID: 4, studentID: 1 });
 // removeStudent({ classID: 4, studentID: 3 });
 editStudent({ classID: 4, studentID: 1, name: 'Rami', email: 'rami222@email.com', city: 'Beirut' });
 
